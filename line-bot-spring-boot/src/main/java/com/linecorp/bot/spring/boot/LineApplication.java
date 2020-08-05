@@ -16,39 +16,42 @@
 
 package com.linecorp.bot.spring.boot;
 
-import com.linecorp.bot.model.event.Event;
-import com.linecorp.bot.model.event.MessageEvent;
-import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.message.Message;
-import com.linecorp.bot.model.message.TextMessage;
-import com.linecorp.bot.spring.boot.annotation.EventMapping;
-import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /**
  * @author wangtianqi20
  */
 @SpringBootApplication
-@LineMessageHandler
 public class LineApplication {
     private final Logger log = LoggerFactory.getLogger(LineApplication.class);
 
-    public static void main(String[] args) {
+    public static Path downloadedContentDir;
+
+    public static void main(String[] args) throws IOException {
+        downloadedContentDir = Files.createTempDirectory("line-bot");
         SpringApplication.run(LineApplication.class, args);
     }
 
-    @EventMapping
-    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-        log.info("event: " + event);
-        final String originalMessageText = event.getMessage().getText();
-        return new TextMessage(originalMessageText);
-    }
-
-    @EventMapping
-    public void handleDefaultMessageEvent(Event event) {
-        System.out.println("event: " + event);
-    }
+//    public static void main(String[] args) {
+//        SpringApplication.run(LineApplication.class, args);
+//    }
+//
+//    @EventMapping
+//    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+//        log.info("event: " + event);
+//        final String originalMessageText = event.getMessage().getText();
+//        return new TextMessage(originalMessageText);
+//    }
+//
+//    @EventMapping
+//    public void handleDefaultMessageEvent(Event event) {
+//        System.out.println("event: " + event);
+//    }
 }
